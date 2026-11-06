@@ -1,0 +1,636 @@
+/* =========================================================
+   Heart of Muskoka – independent redesign concept
+   Mobile-first: the base styles are for phones.
+   The @media (min-width: …) blocks at the bottom add the
+   tablet/desktop layout on top.
+   ========================================================= */
+
+/* ---------- Design tokens (one place to change colours) ---------- */
+:root {
+  --forest: #1f4d3a;     /* main brand green: headings, header */
+  --lake: #1d5f7a;       /* links */
+  --sand: #f6f1e7;       /* soft background for alternate sections */
+  --ink: #1c2421;        /* body text */
+  --muted: #4a5651;      /* secondary text, still readable (>4.5:1 on white and sand) */
+  --book: #a8471a;       /* booking button: warm and different from everything else */
+  --book-dark: #8a3a14;
+  --white: #ffffff;
+  --focus: #f2b632;      /* bright focus ring that shows on light and dark backgrounds */
+
+  --radius: 10px;
+  --gutter: 16px;
+  --max: 1120px;
+  --header-h: 64px;
+}
+
+/* ---------- Base ---------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  /* When a nav link jumps to a section, leave room for the sticky header. */
+  scroll-padding-top: calc(var(--header-h) + 8px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 1.0625rem; /* 17px: comfortable to read on a phone */
+  line-height: 1.6;
+  color: var(--ink);
+  background: var(--white);
+}
+
+h1, h2, h3 {
+  line-height: 1.2;
+  color: var(--forest);
+  margin: 0 0 0.5em;
+}
+
+h1 { font-size: 2rem; }
+h2 { font-size: 1.625rem; }
+h3 { font-size: 1.125rem; }
+
+p { margin: 0 0 1em; }
+
+a { color: var(--lake); }
+
+/* A visible focus ring for keyboard users. :focus-visible shows it for
+   keyboard focus but not for mouse clicks. */
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.small {
+  font-size: 0.9375rem;
+  color: var(--muted);
+}
+
+/* Hidden on screen but still read by screen readers. */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: absolute;
+  left: var(--gutter);
+  top: -100px;
+  z-index: 100;
+  padding: 10px 16px;
+  background: var(--white);
+  color: var(--forest);
+  font-weight: 700;
+  border-radius: var(--radius);
+}
+
+.skip-link:focus {
+  top: 8px;
+}
+
+/* ---------- Buttons ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;          /* comfortable touch target */
+  padding: 0 20px;
+  border-radius: var(--radius);
+  font-weight: 700;
+  text-decoration: none;
+  text-align: center;
+}
+
+.btn-book {
+  background: var(--book);
+  color: var(--white);
+}
+
+.btn-book:hover {
+  background: var(--book-dark);
+}
+
+.btn-outline {
+  border: 2px solid var(--forest);
+  color: var(--forest);
+  background: var(--white);
+}
+
+.btn-outline:hover {
+  background: var(--sand);
+}
+
+/* ---------- Concept banner ---------- */
+.concept-banner {
+  margin: 0;
+  padding: 8px var(--gutter);
+  background: #fff4d6;
+  color: var(--ink);
+  font-size: 0.875rem;
+  text-align: center;
+}
+
+.concept-banner a {
+  display: inline-block;
+  padding: 4px 0;
+  color: var(--ink);
+  font-weight: 700;
+}
+
+/* ---------- Header ---------- */
+.site-header {
+  position: sticky;   /* stays at the top while scrolling, so Book is always reachable */
+  top: 0;
+  z-index: 50;
+  background: var(--forest);
+  color: var(--white);
+}
+
+.header-inner {
+  position: relative; /* the dropdown menu is positioned against this box */
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  max-width: var(--max);
+  min-height: var(--header-h);
+  margin: 0 auto;
+  padding: 8px var(--gutter);
+}
+
+.logo {
+  margin-right: auto; /* pushes Book and Menu to the right */
+  color: var(--white);
+  font-weight: 800;
+  font-size: 1.0625rem;
+  line-height: 1.15;
+  text-decoration: none;
+}
+
+.logo span {
+  display: block;
+  font-weight: 400;
+  font-size: 0.8125rem;
+  opacity: 0.9;
+}
+
+.header-book {
+  min-height: 44px;
+  padding: 0 16px;
+}
+
+.menu-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 12px;
+  border: 2px solid rgba(255, 255, 255, 0.7);
+  border-radius: var(--radius);
+  background: transparent;
+  color: var(--white);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* Three-line "hamburger" icon drawn with CSS: one bar plus two shadows. */
+.menu-icon {
+  width: 18px;
+  height: 2px;
+  background: currentColor;
+  box-shadow: 0 -6px 0 currentColor, 0 6px 0 currentColor;
+}
+
+/* When open, turn the icon into an X so the state is visible. */
+.menu-toggle[aria-expanded="true"] .menu-icon {
+  box-shadow: none;
+  transform: rotate(45deg);
+}
+
+.menu-toggle[aria-expanded="true"] .menu-icon::after {
+  content: "";
+  display: block;
+  width: 18px;
+  height: 2px;
+  background: currentColor;
+  transform: rotate(90deg);
+}
+
+/* ---------- Mobile dropdown menu ---------- */
+.site-nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.site-nav a {
+  display: block;
+  padding: 14px var(--gutter); /* tall rows = easy to tap */
+  color: var(--white);
+  font-weight: 600;
+  text-decoration: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.site-nav a:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* The dropdown: sits directly under the header, full width. */
+.site-nav {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: var(--forest);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* Only hide the menu when JavaScript is running (the script adds the
+   "js" class). Without JS the links simply stay visible, so nobody is locked out. */
+.js .site-nav {
+  display: none;
+}
+
+.js .site-nav.is-open {
+  display: block;
+}
+
+/* No-JS fallback: show links as a normal list, and hide the useless button. */
+html:not(.js) .site-nav {
+  position: static;
+  flex-basis: 100%;
+  box-shadow: none;
+}
+
+html:not(.js) .header-inner {
+  flex-wrap: wrap;
+}
+
+html:not(.js) .menu-toggle {
+  display: none;
+}
+
+/* ---------- Hero ---------- */
+.hero-photo {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  min-height: 220px;
+  padding: 12px;
+  /* Placeholder until a licensed photo is available: a lake-and-sand gradient. */
+  background: linear-gradient(180deg, #8fc3d6 0%, #3f8aa6 55%, #e9dcc0 56%, #d9c69f 100%);
+  color: var(--ink);
+  font-size: 0.8125rem;
+}
+
+.hero-photo span {
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.85);
+}
+
+.hero-text {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 24px var(--gutter) 8px;
+}
+
+.eyebrow {
+  margin-bottom: 0.25em;
+  color: var(--muted);
+  font-weight: 600;
+  font-size: 0.9375rem;
+}
+
+.lead {
+  font-size: 1.125rem;
+}
+
+.hero-actions {
+  display: flex;
+  flex-direction: column; /* stacked full-width buttons on phones */
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+/* ---------- Quick facts ---------- */
+.quick-facts ul {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* 2 x 2 on phones */
+  gap: 1px;
+  max-width: var(--max);
+  margin: 16px auto 0;
+  padding: 0;
+  list-style: none;
+  background: #d8d2c4; /* shows through the 1px gap as divider lines */
+  border-top: 1px solid #d8d2c4;
+  border-bottom: 1px solid #d8d2c4;
+}
+
+.quick-facts li {
+  padding: 12px var(--gutter);
+  background: var(--sand);
+  font-size: 0.9375rem;
+}
+
+.quick-facts strong {
+  display: block;
+  color: var(--forest);
+}
+
+/* ---------- Generic sections ---------- */
+.section {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 40px var(--gutter);
+}
+
+/* Full-width tinted background, content still lined up with the rest. */
+.section-alt {
+  max-width: none;
+  background: var(--sand);
+  padding-left: max(var(--gutter), calc((100% - var(--max)) / 2 + var(--gutter)));
+  padding-right: max(var(--gutter), calc((100% - var(--max)) / 2 + var(--gutter)));
+}
+
+/* ---------- Cottages ---------- */
+.placeholder-note {
+  padding: 10px 12px;
+  border-left: 4px solid var(--book);
+  background: #fbefe8;
+  font-size: 0.9375rem;
+}
+
+.cottage-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.cottage {
+  padding: 16px;
+  border: 1px solid #d8d2c4;
+  border-radius: var(--radius);
+}
+
+.cottage h3 {
+  margin-bottom: 0.15em;
+}
+
+.beds {
+  margin-bottom: 0.4em;
+  color: var(--muted);
+}
+
+.price {
+  margin: 0;
+  font-weight: 700;
+}
+
+.price span {
+  font-weight: 400;
+  color: var(--muted);
+}
+
+.price .tag {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 0 8px;
+  border-radius: 999px;
+  background: #fbefe8;
+  color: var(--book-dark);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* ---------- Amenities ---------- */
+.amenities {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.amenities li::before {
+  content: "✓ ";
+  color: var(--forest);
+  font-weight: 700;
+}
+
+/* ---------- Booking steps ---------- */
+.steps {
+  counter-reset: step;
+  margin: 0 0 16px;
+  padding: 0;
+  list-style: none;
+}
+
+.steps li {
+  counter-increment: step;
+  position: relative;
+  padding-left: 52px;
+  margin-bottom: 16px;
+}
+
+/* The numbered circles are generated by CSS from the <ol> counter. */
+.steps li::before {
+  content: counter(step);
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--forest);
+  color: var(--white);
+  font-weight: 700;
+}
+
+.steps p {
+  margin: 0;
+}
+
+/* ---------- Location & contact ---------- */
+address {
+  font-style: normal;
+  font-weight: 600;
+  margin-bottom: 1em;
+}
+
+.text-link {
+  display: inline-block;
+  padding: 10px 0; /* bigger tap area without changing the look */
+  font-weight: 700;
+}
+
+.contact-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.contact-list .btn {
+  width: 100%;
+  overflow-wrap: anywhere; /* long email address never causes sideways scrolling */
+}
+
+/* ---------- Footer ---------- */
+.site-footer {
+  padding: 32px var(--gutter);
+  background: var(--forest);
+  color: var(--white);
+  text-align: center;
+}
+
+.site-footer a {
+  display: inline-block;
+  padding: 8px 4px; /* gives small text links a bigger tap area */
+  color: var(--white);
+}
+
+.site-footer .small {
+  max-width: 60ch;
+  margin: 0 auto;
+  color: #dfe9e4;
+}
+
+/* =========================================================
+   Wider screens
+   ========================================================= */
+
+/* Larger phones in landscape / small tablets */
+@media (min-width: 600px) {
+  .hero-actions {
+    flex-direction: row;
+  }
+
+  .quick-facts ul {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .cottage-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .amenities {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .contact-list {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .contact-list .btn {
+    width: auto;
+  }
+}
+
+/* Desktop: the menu button disappears and links sit in the header. */
+@media (min-width: 900px) {
+  h1 { font-size: 2.75rem; }
+  h2 { font-size: 2rem; }
+
+  .menu-toggle {
+    display: none;
+  }
+
+  /* Override the dropdown styles: always visible, in a row. */
+  .site-nav,
+  .js .site-nav {
+    display: block;
+    position: static;
+    background: none;
+    box-shadow: none;
+  }
+
+  .site-nav ul {
+    display: flex;
+    gap: 4px;
+  }
+
+  .site-nav a {
+    padding: 10px 12px;
+    border-top: 0;
+    border-radius: var(--radius);
+  }
+
+  /* Order in the header row: logo, links, then Book on the far right. */
+  .site-nav { order: 2; }
+  .header-book { order: 3; margin-left: 8px; }
+
+  .hero {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    align-items: center;
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: 32px var(--gutter) 0;
+    gap: 40px;
+  }
+
+  .hero-photo {
+    order: 2;
+    min-height: 380px;
+    border-radius: var(--radius);
+  }
+
+  .hero-text {
+    padding: 0;
+  }
+
+  .quick-facts {
+    padding: 0 var(--gutter); /* line up with the content edges above and below */
+  }
+
+  .quick-facts ul {
+    margin-top: 32px;
+    border: 1px solid #d8d2c4;
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+
+  .cottage-list {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  .section {
+    padding-top: 64px;
+    padding-bottom: 64px;
+  }
+}
